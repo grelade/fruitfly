@@ -6,6 +6,7 @@ class AttrDict(dict):
 
 conf = AttrDict(
     {
+    'enable_neuprint': True,
     'api_token':None, #uses envvar if None
     'neuprint_URL':'neuprint.janelia.org',
     'dataset_version' :'hemibrain:v1.0.1',

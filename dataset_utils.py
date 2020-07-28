@@ -1,8 +1,31 @@
-from neuprint import Client, NeuronCriteria, fetch_adjacencies, fetch_roi_hierarchy, fetch_meta
+from config import conf
+
+if conf.enable_neuprint:
+    from neuprint import Client, NeuronCriteria, fetch_adjacencies, fetch_roi_hierarchy, fetch_meta
 import os
 import pandas as pd
 
-from config import conf
+
+def fetch_adjacency_noneuprint(
+                    prefix='noncropped_traced',
+                    **kwargs):
+    
+    datadir = conf.datasets_dir
+    postfix = '_'+'.'.join(kwargs['rois']) if 'rois' in kwargs.keys() else ''
+    adjpath = os.path.join(datadir,prefix+postfix)
+    roipath = os.path.join(adjpath,conf.roi_connections_file)
+    neurpath = os.path.join(adjpath,conf.neurons_file)
+    
+    if os.path.exists(adjpath) and os.path.exists(roipath) and os.path.exists(neurpath):
+        #print('dataset already downloaded')
+        adj = pd.read_csv(roipath)
+        neurons = pd.read_csv(neurpath)
+    else:
+        print('no dataset and no neuprint')
+        adj = 0
+        neurons = 0
+ 
+    return neurons,adj
 
 def fetch_adjacency(criteria=None,
                     prefix='noncropped_traced',force_download=False,
