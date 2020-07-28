@@ -60,3 +60,26 @@ def fetch_rois_from_df(conn_df):
     #ROIs from dataset
     rois_dataset = list(conn_df['roi'].unique())
     return rois_dataset
+
+
+
+def fetch_primary_roi_datasets(**kwargs):
+    if 'client' in kwargs.keys():  
+        client = kwargs['client']
+    else: 
+        client = Client(conf.neuprint_URL, conf.dataset_version, conf.api_token)
+        
+    _, primary_rois, _, _ = fetch_rois_from_metadata(client=client)
+
+    empty_rois = []
+    for roi in primary_rois:
+        try:
+            
+            #print(roi)
+            fetch_adjacency(rois=[roi],client=client)
+        except KeyError:
+            print('download problem, skipping')
+            empty_rois+=[roi]
+            continue
+
+    return empty_rois
