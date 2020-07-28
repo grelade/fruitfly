@@ -23,7 +23,7 @@ def fetch_adjacency(criteria=None,
     neurpath = os.path.join(adjpath,conf.neurons_file)
     
     if os.path.exists(adjpath) and os.path.exists(roipath) and os.path.exists(neurpath) and not force_download:
-        print('dataset already downloaded')
+        #print('dataset already downloaded')
         adj = pd.read_csv(roipath)
         neurons = pd.read_csv(neurpath)
     else:

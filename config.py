@@ -12,5 +12,6 @@ conf = AttrDict(
     'datasets_dir': 'datasets',
     'roi_connections_file': 'roi-connections.csv',
     'neurons_file': 'neurons.csv',
+    'results_dir':'results',
     })
 
