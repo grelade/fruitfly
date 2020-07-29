@@ -29,7 +29,8 @@ else:
 for roi in primary_rois:
     try:
         print(roi)
-        if roi not in empty_rois:
+        path = os.path.join(conf.results_dir,'fh_roi='+roi+'.txt')
+        if roi not in empty_rois and not os.path.exists(path):
             if conf.enable_neuprint:
                 n,conn = fetch_adjacency(rois=[roi],client=c)
             else:
@@ -37,13 +38,14 @@ for roi in primary_rois:
             nlist,adj = conn2adj(conn)
             print('adj size =',adj.shape,'non-zero elements =',conn.shape[0])
             fh = hpy(adj)
-#             fh = np.random.randn()
+#           fh = np.random.randn()
             print('fh=',fh)
-            path = os.path.join(conf.results_dir,'fh_roi='+roi+'.txt')
             with open(path,'w') as f:
                 f.write(str(fh))
-        else:
+        elif roi in empty_rois:
             print(roi,': skipping, roi is empty')
+        elif os.path.exists(path):
+            print(roi,': skipping, result exists')
         
     except MemoryError:
         print(roi,'memory error')
