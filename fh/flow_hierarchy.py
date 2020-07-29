@@ -1,7 +1,9 @@
 import numpy as np
 import os
 import subprocess
-import mat4py
+
+
+#import mat4py
 import scipy.sparse
 from timeit import default_timer
 
@@ -137,18 +139,18 @@ def unitize(mat):
     #return np.array(list(map(np.vectorize(lambda x: 1 if x>0 else 0),mat)))
 
 # shabby pipe to matlab
-def hmat(A,output_exec_time=False):
-    mat4py.savemat('temp.mat',{'adj':A.tolist()})
-    cmd = ['matlab -nodesktop -r "load(\'temp.mat\'); tic; addpath(\'fh\'); h = hierarchy(adj); t= toc; save(\'temp.mat\'); quit "']
-    sp = subprocess.run(cmd,shell=True,stdout=subprocess.DEVNULL) #dump output to /dev/null
-    out = mat4py.loadmat('temp.mat')
-    #print(out)
-    if 't' in out.keys():
-        print('run completed. alg_runtime =',out['t'])
-    if output_exec_time:
-        return out['h'],out['t']
-    else:
-        return out['h']
+# def hmat(A,output_exec_time=False):
+#     mat4py.savemat('temp.mat',{'adj':A.tolist()})
+#     cmd = ['matlab -nodesktop -r "load(\'temp.mat\'); tic; addpath(\'fh\'); h = hierarchy(adj); t= toc; save(\'temp.mat\'); quit "']
+#     sp = subprocess.run(cmd,shell=True,stdout=subprocess.DEVNULL) #dump output to /dev/null
+#     out = mat4py.loadmat('temp.mat')
+#     #print(out)
+#     if 't' in out.keys():
+#         print('run completed. alg_runtime =',out['t'])
+#     if output_exec_time:
+#         return out['h'],out['t']
+#     else:
+#         return out['h']
 
 def calc_fh(A,alg='py'):
 
@@ -158,6 +160,6 @@ def calc_fh(A,alg='py'):
     elif alg=='py_optim':
         print('starting sparse python alg...')
         return hpy_sparse(A)
-    else:
-        print('starting MATLAB alg...')        
-        return hmat(A)
+#     else:
+#         print('starting MATLAB alg...')        
+#         return hmat(A)
