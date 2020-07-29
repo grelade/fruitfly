@@ -1,3 +1,5 @@
+from neuprint import Client
+
 from config import conf
 from dataset_utils import fetch_primary_roi_datasets
 
