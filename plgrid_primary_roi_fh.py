@@ -36,8 +36,8 @@ for roi in primary_rois:
                 n,conn = fetch_adjacency_noneuprint(rois=[roi]) #hacky way to circumvent lack of neuprint
             nlist,adj = conn2adj(conn)
             print('adj size =',adj.shape,'non-zero elements =',conn.shape[0])
-            #fh = hpy(adj)
-            fh = np.random.randn()
+            fh = hpy(adj)
+#             fh = np.random.randn()
             print('fh=',fh)
             path = os.path.join(conf.results_dir,'fh_roi='+roi+'.txt')
             with open(path,'w') as f:

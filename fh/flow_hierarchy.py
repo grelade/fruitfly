@@ -73,8 +73,9 @@ def unitize(mat):
     #return np.array(list(map(np.vectorize(lambda x: 1 if x>0 else 0),mat)))
 
 
+#...slower than numpy for large dims
 def hpy_sparse(A,output_exec_time=False,matrix_init_func=scipy.sparse.dok_matrix):
-    
+
     time_start = default_timer()
     n = A.shape[0]
     A_edge = matrix_init_func((n,n))
