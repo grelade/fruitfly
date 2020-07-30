@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 from config import conf
-#conf.enable_neuprint = False #disabling neuprint
+conf.enable_neuprint = False #disabling neuprint
 
 from fh.flow_hierarchy import hpy
 from utils import conn2adj
@@ -10,10 +10,14 @@ from utils import conn2adj
 from dataset_utils import fetch_adjacency
     
 # get CX_rois
-#CX_rois = ['PB','NO','FB','EB','AB(L)','AB(R)']
-CX_rois = ['PB']
+CX_rois = ['PB','NO','FB','EB','AB(L)','AB(R)']
+#CX_rois = ['PB']
+empty_rois = []
 
 h_results = {'h':[],'h_randwire':[],'h_randweight':[]}
+
+hpy = lambda x: np.random.randn()
+
 for roi in CX_rois:
     try:
         print(roi)
@@ -45,7 +49,7 @@ for roi in CX_rois:
 #             fh = np.random.randn()
             print(f'h={h},h_randwire={h_randwire},h_randweight={h_randweight}')
             with open(path,'w') as f:
-                f.write(str(h),str(h_randwire),str(h_randweight))
+                f.write(f'{h} {h_randwire} {h_randweight}')
                 
         elif roi in empty_rois:
             print(roi,': skipping, roi is empty')
