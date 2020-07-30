@@ -16,7 +16,7 @@ empty_rois = []
 
 h_results = {'h':[],'h_randwire':[],'h_randweight':[]}
 
-hpy = lambda x: np.random.randn()
+#hpy = lambda x: np.random.randn()
 
 for roi in CX_rois:
     try:
@@ -46,7 +46,6 @@ for roi in CX_rois:
             h_results['h_randwire'] += [h_randwire]
             h_results['h_randweight'] += [h_randweight]
 
-#             fh = np.random.randn()
             print(f'h={h},h_randwire={h_randwire},h_randweight={h_randweight}')
             with open(path,'w') as f:
                 f.write(f'{h} {h_randwire} {h_randweight}')
