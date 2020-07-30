@@ -57,44 +57,18 @@ def fetch_adjacency(criteria=None,
     return neurons,adj
 
 
-
-def fetch_adjacency_noneuprint(prefix='noncropped_traced',
-                               **kwargs):
-    '''
-    fetch_adjacency func to use in plgrid, serves as fetch_adjacency when no neuprint support
-    '''
-    datadir = conf.datasets_dir
-    postfix = '_'+'.'.join(kwargs['rois']) if 'rois' in kwargs.keys() else ''
-    adjpath = os.path.join(datadir,prefix+postfix)
-    roipath = os.path.join(adjpath,conf.roi_connections_file)
-    neurpath = os.path.join(adjpath,conf.neurons_file)
-    
-    if os.path.exists(adjpath) and os.path.exists(roipath) and os.path.exists(neurpath):
-        #print('dataset already downloaded')
-        adj = pd.read_csv(roipath)
-        neurons = pd.read_csv(neurpath)
-    else:
-        print('no dataset and no neuprint')
-        adj = 0
-        neurons = 0
- 
-    return neurons,adj
-
-
 def fetch_rois_from_metadata(**kwargs):
     '''
     DESCRIPTION MISSING
     '''
-    if 'client' in kwargs.keys():  
-        client = kwargs['client']
-    else: 
-        client = Client(conf.neuprint_URL, conf.dataset_version, conf.api_token)
-        
-    metadata = fetch_meta(**kwargs)
+    if 'client' not in kwargs.keys():  
+        kwargs['client'] = Client(conf.neuprint_URL, conf.dataset_version, conf.api_token)
+
+    metadata = fetch_meta(client=kwargs['client'])
     #print(metadata.keys())
-    g = fetch_roi_hierarchy(mark_primary=False,include_subprimary=True,format='nx',**kwargs)
+    g = fetch_roi_hierarchy(mark_primary=False,include_subprimary=True,format='nx',client=kwargs['client'])
     
-    nonhierarchy_rois = metadata['nonHierarchicalRois']
+    nonhierarchy_rois = metadata['nonHierarchicalROIs']
     primary_rois = metadata['primaryRois']
     
     all_rois = list(g.nodes)
@@ -120,19 +94,17 @@ def fetch_primary_roi_datasets(**kwargs):
     '''
     DESCRIPTION MISSING
     '''
-    if 'client' in kwargs.keys():  
-        client = kwargs['client']
-    else: 
-        client = Client(conf.neuprint_URL, conf.dataset_version, conf.api_token)
-        
-    _, primary_rois, _, _ = fetch_rois_from_metadata(client=client)
+    if 'client' not in kwargs.keys():  
+        kwargs['client'] = Client(conf.neuprint_URL, conf.dataset_version, conf.api_token)
+
+    _, primary_rois, _, _ = fetch_rois_from_metadata(client=kwargs['client'])
 
     empty_rois = []
     for roi in primary_rois:
         try:
             
             #print(roi)
-            fetch_adjacency(rois=[roi],client=client)
+            fetch_adjacency(rois=[roi],client=kwargs['client'])
         except KeyError:
             print('download problem, skipping')
             empty_rois+=[roi]
