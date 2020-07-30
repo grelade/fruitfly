@@ -82,6 +82,11 @@ if weights:
 
 ind = optimize(adj, seed)
 
+# the ordering was determined only wrt the maximal connected component
+# we have to combine it with the projection on that component
+nodes = np.array(nodes)
+ind = nodes[ind]
+
 if weights or wiring:
     quit()
 
