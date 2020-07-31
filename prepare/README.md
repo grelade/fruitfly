@@ -24,3 +24,13 @@ I ran the scripts
 ./fix_raw_orderings_all_cx.sh
 ```
 Note that **FB** was run separately as it took 10 hours at threshold 1 and 3 hours at threshold 10.
+
+`optimize_ordering.py` contains just the optimization routines. Useful functions:
+```
+ind = optimize(adj, seed) # performs optimization for the adjacency matrix adj
+```
+and
+```
+def compute_score(adj, perm=None)
+```
+computes *recurrence* score for a given adjacency matrix (and an optional permutation)
