@@ -10,13 +10,13 @@ Raw orderings are generated for the maximal connected component of the given ROI
 ```
 python make_raw_ordering.py ROI THRESHOLD SEED
 ```
-which generates a file with a name like `processed/ordering_PB_raw_t10_s0.npz` (threshold 10 seed 0).
+which generates a file with a name like `processed/ordering_PB_raw_T10_S0.npz` (threshold 10 seed 0).
 
 Typically the resulting DAG part of the graph is disconnected. This is fixed by the script
 ```
 python fix_raw_ordering.py ROI THRESHOLD SEED
 ```
-which produces `processed/ordering_PB_fix_t10_s0.npz`. These files should be used for any subsequent analysis.
+which produces `processed/ordering_PB_fix_T10_S0.npz`. These files should be used for any subsequent analysis.
 
 I ran the scripts
 ```
