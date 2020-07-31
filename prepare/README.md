@@ -33,4 +33,4 @@ and
 ```
 def compute_score(adj, perm=None)
 ```
-computes *recurrence* score for a given adjacency matrix (and an optional permutation)
+computes *recurrence* score for a given adjacency matrix (and an optional permutation or ordering of a subset of nodes).

@@ -9,9 +9,10 @@ def compute_score(adj, perm=None):
     N = len(adj)
     if perm is None:
         perm = np.arange(N)
-    lower = np.tril_indices(N, k=-1)
+    lower = np.tril_indices(len(perm), k=-1)
+    adj = adj[perm,:][:,perm]
     total_weight = np.sum(adj)
-    return np.sum((adj[perm,:][:,perm])[lower])/total_weight
+    return np.sum(adj[lower])/total_weight
 
 
 def initialize(adj, n_permutations=100):
