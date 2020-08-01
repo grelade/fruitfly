@@ -3,6 +3,8 @@ import networkx as nx
 from time import time
 import sys
 
+import matplotlib.pyplot as plt
+
 from utils import load
 
 if len(sys.argv)<4:
@@ -40,10 +42,14 @@ rlength = np.zeros(nrec, dtype=int)
 
 rows, cols = np.nonzero(Ar)
 
+reciprocal_weights = []
+
 for i, (r, c) in enumerate(zip(rows, cols)):
     rlength[i] = -1 # unreachable
     if r in lengths[c]:
         rlength[i] = lengths[c][r]  # length of shortest path in DAG
+        if rlength[i]==1:
+            reciprocal_weights.append((Aw[c,r], Aw[r,c]))
 
 
 print()
@@ -53,4 +59,13 @@ percentages = 100.0*cnts/nrec
 for u, c, p in zip(un, cnts, percentages):
     print('length of shortest path in DAG {} number of recurrent connections {} fraction {:.2f}'.format(u, c, p))
     
+reciprocal_weights = np.array(reciprocal_weights)
+max_weight = np.amax(reciprocal_weights)
+plt.figure()
+plt.scatter(reciprocal_weights[:,0], reciprocal_weights[:,1], s=1, alpha=0.5)
+plt.plot([1,max_weight], [1,max_weight], color='k', alpha=0.25)
+plt.xlabel('feed-forward weights')
+plt.ylabel('recurrent weights')
+plt.title('reciprocal connections ({} threshold {})'.format(roi, threshold))
 
+plt.show()
