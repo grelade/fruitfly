@@ -1,5 +1,7 @@
 import numpy as np
 import os
+import sys
+sys.path.append('../') 
 
 from config import conf
 conf.enable_neuprint = False #disabling neuprint
@@ -17,13 +19,14 @@ empty_rois = []
 h_results = {'h':[],'h_randwire':[],'h_randweight':[]}
 
 #hpy = lambda x: np.random.randn()
+reldir = '../'
 
 for roi in CX_rois:
     try:
         print(roi)
-        path = os.path.join(conf.results_dir,'CX_study','roi='+roi+'.txt')
+        path = os.path.join(reldir,conf.results_dir,'CX_study','roi='+roi+'.txt')
         if roi not in empty_rois and not os.path.exists(path):
-            n,conn = fetch_adjacency(adjpath='datasets/noncropped_traced_'+roi)
+            n,conn = fetch_adjacency(adjpath=os.path.join(reldir,conf.datasets_dir,'noncropped_traced_'+roi))
             nlist,adj = conn2adj(conn)
             print('adj size =',adj.shape,'non-zero elements =',conn.shape[0])
             
